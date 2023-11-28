@@ -1,8 +1,61 @@
 <script setup>
-// import HelloWorld from './components/Component1.vue'
-// import Btn from './components/Button.vue'
+    import { ref, defineCustomElement } from "vue";
+    import Task from "./components/Task.vue"
+    
+    let newTasksArray = ref([])
+    let titleInput;
+    let msgInput;
+
+    function createTask(){
+        newTasksArray.value.push({title: titleInput, msg: msgInput})
+    }
+    
+    
 </script>
 
 <template>
-    <h1 class="text-red-700">Hello world!</h1>
+    <div class="grid grid-cols-3 gap-4 p-4">
+        <div>
+            <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md p-4">
+                <div class="flex justify-start items-center">
+                    <div>
+                        <h2 class="text-4xl font-extrabold mb-4">Create task</h2>
+                        <div class="xl:grid xl:grid-cols-3">
+                            <p class="xl:text-right text-xl font-semibold">Title: </p>
+                            <input v-model="titleInput" type="text" placeholder="Frontend" class="col-span-2 text-xl border-b-2 border-yellow-500 bg-transparent focus:outline-none focus:border-yellow-700">
+                            <p class="xl:text-right text-xl font-semibold">Message: </p>
+                            <input v-model="msgInput" type="text" placeholder="Do 12'th assignment" class="col-span-2 text-xl border-b-2 border-yellow-500 bg-transparent focus:outline-none focus:border-yellow-700">
+                        </div>
+                    </div>
+                    <div class="mx-12 grid grid-cols-1">
+                        <button class="mx-auto" @click="createTask">
+                            <div class="bg-[#fddd00] rounded-full">
+                                <img src="./assets/plus-svgrepo-com.svg" alt="" class="w-16 p-1 xl:p-4">
+                            </div>
+                            
+                        </button>
+                        
+                        <p class="text-md font-extrabold text-center">Add Task!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md mt-4 p-4">
+                <h2 class="text-4xl font-extrabold">Current tasks:</h2>
+                <component v-for="item in newTasksArray" :is="Task" :title="item.title" :msg="item.msg"></component>
+            </div>
+        </div>
+        <div>
+            <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md p-4">
+                <h2 class="text-4xl font-extrabold">In-progress tasks:</h2>
+            
+                <Task title="Lol" msg="Fd"/>
+                
+            </div>
+        </div>
+        <div>
+            <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md p-4">
+                <h2 class="text-4xl font-extrabold">Finished tasks:</h2>
+            </div>
+        </div>
+    </div>
 </template>
