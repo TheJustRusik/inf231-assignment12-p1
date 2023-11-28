@@ -21,7 +21,7 @@
         </div>
         <div class="ml-5">
             
-            <button class="bg-green-500 rounded-xl">
+            <button class="bg-green-500 rounded-xl" @click="$emit('promote')">
                 <img src="../assets/check-square-svgrepo-com.svg" alt="" class="w-8">
             </button>
             

@@ -3,6 +3,7 @@
     import Task from "./components/Task.vue"
     
     let newTasksArray = ref([])
+    let progressTasksArray = ref([])
     let titleInput;
     let msgInput;
 
@@ -16,6 +17,11 @@
         newTasksArray.value.splice(index, 1)
     }
     
+    function promoteToInProgres(index){
+        console.log(newTasksArray.value[index])
+        progressTasksArray.value.push(newTasksArray.value[index])
+        newTasksArray.value.splice(index, 1)
+    }
     
 </script>
 
@@ -47,15 +53,13 @@
             </div>
             <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md mt-4 p-4">
                 <h2 class="text-4xl font-extrabold">Current tasks:</h2>
-                <Task v-for="(item, index) in newTasksArray" :title="item.title" :msg="item.msg" @delete="deleteTask(index)"></Task>
+                <Task v-for="(item, index) in newTasksArray" :title="item.title" :msg="item.msg" @delete="deleteTask(index)" @promote="promoteToInProgres(index)"></Task>
             </div>
         </div>
         <div>
             <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md p-4">
                 <h2 class="text-4xl font-extrabold">In-progress tasks:</h2>
-            
-                <Task title="Lol" msg="Fd"/>
-                
+                <Task v-for="(item, index) in progressTasksArray" :title="item.title" :msg="item.msg" @delete="deleteTask(index)" @promote="promoteToFinished(index)"></Task>
             </div>
         </div>
         <div>
