@@ -25,7 +25,7 @@
                 <img src="../assets/check-square-svgrepo-com.svg" alt="" class="w-8">
             </button>
             
-            <button class="bg-red-500 rounded-xl">
+            <button class="bg-red-500 rounded-xl" @click="$emit('delete')">
                 
                 <img src="../assets/x-square-svgrepo-com.svg" alt="" class="w-8">
             </button>

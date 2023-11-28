@@ -8,6 +8,12 @@
 
     function createTask(){
         newTasksArray.value.push({title: titleInput, msg: msgInput})
+        titleInput = ""
+        msgInput = ""
+    }
+
+    function deleteTask(index){
+        newTasksArray.value.splice(index, 1)
     }
     
     
@@ -41,7 +47,7 @@
             </div>
             <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md mt-4 p-4">
                 <h2 class="text-4xl font-extrabold">Current tasks:</h2>
-                <component v-for="item in newTasksArray" :is="Task" :title="item.title" :msg="item.msg"></component>
+                <Task v-for="(item, index) in newTasksArray" :title="item.title" :msg="item.msg" @delete="deleteTask(index)"></Task>
             </div>
         </div>
         <div>
