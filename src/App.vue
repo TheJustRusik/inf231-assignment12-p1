@@ -4,10 +4,15 @@
     
     let newTasksArray = ref([])
     let progressTasksArray = ref([])
+    let finishedTasksArray = ref([])
     let titleInput;
     let msgInput;
 
     function createTask(){
+        if (titleInput.length == 0){
+            alert("Title is required!")
+            return
+        }
         newTasksArray.value.push({title: titleInput, msg: msgInput})
         titleInput = ""
         msgInput = ""
@@ -18,11 +23,24 @@
     }
     
     function promoteToInProgres(index){
-        console.log(newTasksArray.value[index])
         progressTasksArray.value.push(newTasksArray.value[index])
         newTasksArray.value.splice(index, 1)
     }
+
+    function promoteToFinished(index){
+        finishedTasksArray.value.push(progressTasksArray.value[index])
+        progressTasksArray.value.splice(index, 1)
+    }
     
+    function downgradeToNew(index){
+        newTasksArray.value.push(progressTasksArray.value[index])
+        progressTasksArray.value.splice(index, 1)
+    }
+
+    function downgradeToInProgres(index){
+        progressTasksArray.value.push(finishedTasksArray.value[index])
+        finishedTasksArray.value.splice(index, 1)
+    }
 </script>
 
 <template>
@@ -52,19 +70,20 @@
                 </div>
             </div>
             <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md mt-4 p-4">
-                <h2 class="text-4xl font-extrabold">Current tasks:</h2>
+                <h2 class="text-4xl font-extrabold">Current tasks: {{ newTasksArray.length == 0 ? "" : newTasksArray.length}}</h2>
                 <Task v-for="(item, index) in newTasksArray" :title="item.title" :msg="item.msg" @delete="deleteTask(index)" @promote="promoteToInProgres(index)"></Task>
             </div>
         </div>
         <div>
             <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md p-4">
-                <h2 class="text-4xl font-extrabold">In-progress tasks:</h2>
-                <Task v-for="(item, index) in progressTasksArray" :title="item.title" :msg="item.msg" @delete="deleteTask(index)" @promote="promoteToFinished(index)"></Task>
+                <h2 class="text-4xl font-extrabold">In-progress tasks: {{ progressTasksArray.length == 0 ? "" : progressTasksArray.length }}</h2>
+                <Task v-for="(item, index) in progressTasksArray" :title="item.title" :msg="item.msg" @delete="downgradeToNew(index)" @promote="promoteToFinished(index)"></Task>
             </div>
         </div>
         <div>
             <div class="bg-[#fcfcfe] rounded-xl drop-shadow-md p-4">
-                <h2 class="text-4xl font-extrabold">Finished tasks:</h2>
+                <h2 class="text-4xl font-extrabold">Finished tasks: {{ finishedTasksArray.length == 0 ? "" : finishedTasksArray.length}}</h2>
+                <Task v-for="(item, index) in finishedTasksArray" :title="item.title" :msg="item.msg" @delete="downgradeToInProgres(index)"></Task>
             </div>
         </div>
     </div>
